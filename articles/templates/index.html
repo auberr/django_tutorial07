@@ -4,6 +4,17 @@
   <title>django</title>
 </head>
 <body>
-  django sparta 프로젝트의 메인 페이지입니다!
+  <p>django sparta 프로젝트의 메인 페이지입니다!</p>
+  <br>
+  <a href="{% url 'articles:write' %}"><button>글쓰기</button></a>
+  <br>
+  <h1>게시글들</h1>
+  {% for article in articles %}
+  <div>
+    <hr>
+    <h3>{{ article.title }}</h3>
+    <a href="{% url 'articles:detail' article.id %}"><p>[Detail]</p></a>
+  </div>
+  {% endfor %}
 </body>
 </html>
