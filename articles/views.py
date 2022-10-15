@@ -29,6 +29,10 @@ def write(request):
         Article.objects.create(title=title, content=content, user=request.user)
         return redirect("articles:index")
 
-def detail():
-    pass
+def detail(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    context = {
+        "article": article
+    }
+    return render(request, "detail.html", context)
 
