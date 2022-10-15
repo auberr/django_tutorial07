@@ -7,6 +7,15 @@
     <title>Detail</title>
 </head>
 <body>
+    <a href="{% url 'articles:edit' article.id %}">
+        <button>수정하기</button>
+    </a>
+    <br><br>
+    <form action="{% url 'articles:delete' article.id %}" method="POST">
+        {% csrf_token %}
+        <button>삭제하기</button>
+    </form>
+    <hr>
     <p>글쓴시간 : {{ article.created_at }}</p>
     <p>글내용 : {{ article.content }}</p>
     <p>글쓴이 : {{ article.user }}</p>

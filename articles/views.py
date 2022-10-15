@@ -36,3 +36,26 @@ def detail(request, article_id):
     }
     return render(request, "detail.html", context)
 
+
+def edit(request, article_id):
+    if request.method == 'GET':
+        article = get_object_or_404(Article, id=article_id)
+        context = {
+            "article":article
+        }
+        return render(request, "write_edit.html", context)
+    
+    elif request.method =='POST':
+        article = get_object_or_404(Article, id=article_id)
+        article.title = request.POST.get('title')
+        article.content = request.POST.get('content')
+        article.save()
+        return redirect("articles:detail", article_id)
+
+def delete(request, pk):
+    article = Article.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        article.delete()
+    
+    return redirect("articles:index")
