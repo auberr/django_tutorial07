@@ -1,0 +1,9 @@
+<p>{{ user }} </p>
+<p>{{ user.last_login }} </p>
+<p>{{request.user }} </p>
+
+
+{% if user == request.user %}
+    <div>내 프로필</div>
+
+{% endif %}

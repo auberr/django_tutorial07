@@ -36,9 +36,20 @@ def home(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
             return render(request, 'home.html')
-        else :
+        elif request.user.is_anonymous:
             return redirect('/login/')
     
     elif request.method == 'POST':
         return HttpResponse('이 요청은 POST')
     
+
+def profile(request, username):
+    if request.method == 'GET':
+        user = User.objects.get(username=username)
+        if user is not None:
+            context = {
+                "user": user
+            }
+        return render(request, 'profile.html', context)
+
+        
