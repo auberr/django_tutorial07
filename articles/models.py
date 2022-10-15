@@ -12,3 +12,11 @@ class Article(models.Model):
 
     def __str__(self):
         return str(self.content)
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(max_length=512)
+    def __str__(self):
+        return f'{self.user} {self.content}'

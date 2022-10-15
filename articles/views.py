@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from articles.models import Article
+from articles.models import Article, Comment
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
@@ -31,8 +31,10 @@ def write(request):
 
 def detail(request, article_id):
     article = get_object_or_404(Article, id=article_id)
+    comments = list(article.comment_set.all().values())
     context = {
-        "article": article
+        "article": article,
+        "comments": comments
     }
     return render(request, "detail.html", context)
 
@@ -59,3 +61,24 @@ def delete(request, pk):
         article.delete()
     
     return redirect("articles:index")
+
+def comment(request, article_id):
+    if request.method == 'GET':
+        return HttpResponse('comment GET')
+        # article = Article.objects.get(pk=article_id)
+        # comments = list(article.comment_set.all().values())
+        # return redirect("articles:detail", article_id)
+        # article = Article.objects.get(pk=article_id)
+        # comments = list(article.comment_set.all().values())
+        # context = {
+        #     'article': article,
+        #     'comment': comment
+        # }
+        # return render(request, "detail.html", context)
+    
+    elif request.method == 'POST':
+        content = request.POST.get('content', None)
+        article = Article.objects.get(pk=article_id)
+        comment = Comment(user=request.user, content=content, article=article)
+        comment.save()
+        return redirect("articles:detail", article_id)
