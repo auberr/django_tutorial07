@@ -27,21 +27,9 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/home/')
+            return redirect('articles:index')
         else:
             return redirect('/login/')
-
-
-def home(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            return render(request, 'home.html')
-        elif request.user.is_anonymous:
-            return redirect('/login/')
-    
-    elif request.method == 'POST':
-        return HttpResponse('이 요청은 POST')
-    
 
 def profile(request, username):
     if request.method == 'GET':
