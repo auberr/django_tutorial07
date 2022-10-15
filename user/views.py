@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from user.models import User
+from articles.models import Article
 from django.contrib.auth import authenticate, login
 
 # Create your views here.
@@ -34,9 +35,11 @@ def user_login(request):
 def profile(request, username):
     if request.method == 'GET':
         user = User.objects.get(username=username)
+        articles = Article.objects.all()
         if user is not None:
             context = {
-                "user": user
+                "user": user,
+                "articles": articles
             }
         return render(request, 'profile.html', context)
 

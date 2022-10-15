@@ -1,9 +1,24 @@
-<p>{{ user }} </p>
-<p>{{ user.last_login }} </p>
-<p>{{request.user }} </p>
-
-
+<p>닉네임 : {{ user }} </p>
+<p>마지막 로그인 : {{ user.last_login }} </p>
+<hr>
 {% if user == request.user %}
     <div>내 프로필</div>
+    <p>당신은 : {{request.user }} </p>
+    <hr>
+    <hr>
+    <hr>
+    <div>
+        <p>내가쓴글</p>
+        {% for article in articles %}
+        
+        <div>
+            <hr>
+            <h3>글쓴이 : {{ article.user }}</h3>
+            <h3>글제목 : {{ article.title }}</h3>
+            <a href="{% url 'articles:detail' article.id %}"><p>[Detail]</p></a>
+        </div>
+        {% endfor %}
+    </div>
+
 
 {% endif %}
