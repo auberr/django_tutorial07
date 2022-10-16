@@ -19,5 +19,32 @@
     <p>글쓴시간 : {{ article.created_at }}</p>
     <p>글내용 : {{ article.content }}</p>
     <p>글쓴이 : {{ article.user }}</p>
+    <p>likes : {{ likes }}</p>
+    <hr>
+    <p>코멘트</p>
+    <ul>
+        {% for comment in comments reversed %}
+        <p>---------------------------------</p>
+        <a href="{% url 'articles:comment_edit' article.id comment.id %}">
+            <button>수정하기</button>
+        </a>
+        <br><br>
+        <form action="{% url 'articles:comment_delete' article.id comment.id %}" method="POST">
+            {% csrf_token %}
+            <button>삭제하기</button>
+        </form>
+        <li>글쓴이 : {{ comment.user }}</li>
+        <li>글내용 : {{ comment.content }}</li>
+        <p>---------------------------------</p>
+        {% endfor %} 
+    </ul>
+    <hr>
+    <p>코멘트쓰기</p>
+    <form action="{% url 'articles:comment' article.id %}" method="POST">
+        {% csrf_token %}
+        <textarea name="content" id="content" cols="30" rows="3" placeholder="content"></textarea>
+        <br>
+        <input type="submit" />
+    </form>
 </body>
 </html>

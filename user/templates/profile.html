@@ -1,6 +1,14 @@
 <p>닉네임 : {{ user }} </p>
 <p>마지막 로그인 : {{ user.last_login }} </p>
+{% for followers in following %}
+<p>팔로우 한 유저 : {{ followers.username }}</p>
+{% endfor %}
 <hr>
+<form action="{% url 'user:follow' user %}" method="POST">
+    {% csrf_token %}
+    <button>follow</button>
+</form>
+
 {% if user == request.user %}
     <div>내 프로필</div>
     <p>당신은 : {{request.user }} </p>

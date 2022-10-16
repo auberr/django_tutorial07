@@ -16,7 +16,7 @@ def signup(request):
         address =request.POST.get('address', '')
         user = User.objects.create_user(username=username, password=password, phone=phone, address=address)
 
-        return redirect('/login/')
+        return redirect('/user/login/')
 
 def user_login(request):
     if request.method == 'GET':
@@ -30,7 +30,7 @@ def user_login(request):
             login(request, user)
             return redirect('articles:index')
         else:
-            return redirect('/login/')
+            return redirect('/user/login/')
 
 def profile(request, username):
     if request.method == 'GET':
@@ -43,4 +43,18 @@ def profile(request, username):
             }
         return render(request, 'profile.html', context)
 
-        
+def follow(request, username):
+    if request.method == 'GET':
+        user = request.user
+        following = list(user.follow.all().values('username'))
+        context = {
+            'following': following
+        }
+        return render(request, 'profile.html', context)
+
+    if request.method == 'POST':
+        target_user = User.objects.get(username=username)
+        user = request.user
+        user.follow.add(target_user)
+        user.save()
+        return redirect('user:profile', username)
