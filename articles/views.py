@@ -96,3 +96,16 @@ def comment_delete(request, article_id, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         comment.delete()
         return redirect("articles:detail", article_id)
+
+def article_like(request, article_id):
+    if request.method == 'GET':
+        article = Article.objects.get(pk=article_id)
+        return HttpResponse('like GET')
+
+    if request.method == 'POST':
+        article = Article.objects.get(pk=article_id)
+        article.like_users.add(request.user)
+        article.save()
+        return redirect("articles:index")
+
+
