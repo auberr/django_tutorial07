@@ -65,20 +65,34 @@ def delete(request, pk):
 def comment(request, article_id):
     if request.method == 'GET':
         return HttpResponse('comment GET')
-        # article = Article.objects.get(pk=article_id)
-        # comments = list(article.comment_set.all().values())
-        # return redirect("articles:detail", article_id)
-        # article = Article.objects.get(pk=article_id)
-        # comments = list(article.comment_set.all().values())
-        # context = {
-        #     'article': article,
-        #     'comment': comment
-        # }
-        # return render(request, "detail.html", context)
     
     elif request.method == 'POST':
         content = request.POST.get('content', None)
         article = Article.objects.get(pk=article_id)
         comment = Comment(user=request.user, content=content, article=article)
         comment.save()
+        return redirect("articles:detail", article_id)
+
+def comment_edit(request, article_id, comment_id):
+    if request.method == 'GET':
+        article = get_object_or_404(Article, id=article_id)
+        comment = get_object_or_404(Comment, id=comment_id)
+        context = {
+            "article": article,
+            "comment": comment
+        }
+        return render(request, "detail_comment_edit.html", context)
+
+    if request.method == 'POST':
+        content = request.POST.get('content', None)
+        article = Article.objects.get(pk=article_id)
+        comment = Comment(user=request.user, content=content, article=article)
+        comment.save()
+        return redirect("articles:detail", article_id)
+
+def comment_delete(request, article_id, comment_id):
+    if request.method == 'POST':
+        article = Article.objects.get(pk=article_id)
+        comment = get_object_or_404(Comment, id=comment_id)
+        comment.delete()
         return redirect("articles:detail", article_id)
