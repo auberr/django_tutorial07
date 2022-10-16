@@ -13,6 +13,7 @@
   <div>
     <hr>
     <h3>{{ article.title }}</h3>
+    <p>{{ article.likes }}</p>
     <form action="{% url 'articles:article_like' article.id %}" method="POST">
       {% csrf_token %}
       <button>좋아요</button>

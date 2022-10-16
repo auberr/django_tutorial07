@@ -9,7 +9,7 @@ def index(request):
         if request.user.is_authenticated:
             articles = Article.objects.all().order_by('-pk')
             context = {
-                "articles" : articles
+                "articles" : articles,
             }
             return render(request, 'index.html', context)
         elif request.user.is_anonymous:
@@ -31,10 +31,12 @@ def write(request):
 
 def detail(request, article_id):
     article = get_object_or_404(Article, id=article_id)
+    likes = article.like_users.all().count()
     comments = list(article.comment_set.all().values())
     context = {
         "article": article,
-        "comments": comments
+        "comments": comments,
+        "likes": likes
     }
     return render(request, "detail.html", context)
 

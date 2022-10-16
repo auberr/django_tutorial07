@@ -43,4 +43,18 @@ def profile(request, username):
             }
         return render(request, 'profile.html', context)
 
-        
+def follow(request, username):
+    if request.method == 'GET':
+        user = request.user
+        following = list(user.follow.all().values('username'))
+        context = {
+            'following': following
+        }
+        return render(request, 'profile.html', context)
+
+    if request.method == 'POST':
+        target_user = User.objects.get(username=username)
+        user = request.user
+        user.follow.add(target_user)
+        user.save()
+        return redirect('user:profile', username)
